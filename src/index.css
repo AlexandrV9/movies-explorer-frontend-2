@@ -1,0 +1,52 @@
+@import url(./vendor/normalize.css);
+
+@import url(./vendor/fonts/fonts.css);
+
+.page {
+  font-family: 'Inter', sans-serif;
+  font-style: normal;
+  background: #202020;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-text-size-adjust: 100%;
+  -ms-text-size-adjust: 100%;
+  -moz-text-size-adjust: 100%;
+  text-rendering: optimizeLegibility;
+}
+
+@media screen and (max-width: 768px) {
+  .page_lock {
+    overflow: hidden;
+  }
+}
+
+.button {
+  transition: all .3s linear;
+}
+
+.button:hover {
+  opacity: 0.8;
+}
+
+.content-wrapper {
+  max-width: 1140px;
+  margin: 0 auto;
+}
+
+@media screen and (max-width: 1240px) {
+  .content-wrapper {
+    margin: 0 50px;
+  }
+}
+
+@media screen and (max-width: 620px) {
+  .content-wrapper {
+    margin: 0 30px;
+  }
+}
+
+@media screen and (max-width: 390px) {
+  .content-wrapper {
+    margin: 0 14px;
+  }
+}

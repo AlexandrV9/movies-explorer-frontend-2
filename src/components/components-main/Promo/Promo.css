@@ -1,0 +1,80 @@
+.training-project {
+  margin: 20px auto 110px;
+  background: #272727;
+  border-radius: 10px;
+  max-width: 1200px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.training-project__title {
+  margin: 0 0 151px;
+  padding-top: 160px;
+  font-weight: normal;
+  font-size: 50px;
+  line-height: 58px;
+  text-align: center;
+  letter-spacing: -0.04em;
+  color: #fff;
+}
+
+.training-project__wrapper {
+  max-width: 670px;
+  padding-bottom: 30px;
+}
+
+@media screen and (max-width: 1240px) {
+  .training-project {
+    margin: 20px 20px 110px;
+  }
+}
+
+@media screen and (max-width: 1024px) {
+  .training-project__title {
+    font-size: 40px;
+    line-height: 52px;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .training-project__title {
+    padding-top: 350px;
+    margin-bottom: 314px;
+  }
+
+  .training-project {
+    margin-bottom: 90px;
+  }
+}
+
+@media screen and (max-width: 620px) {
+  .training-project__title {
+    font-size: 32px;
+    line-height: 40px;
+    padding-top: 220px;
+    margin-bottom: 212px;
+  }
+
+}
+
+@media screen and (max-width: 470px) {
+  .training-project__title {
+    font-size: 29px;
+    line-height: 37px;
+  }
+}
+
+@media screen and (max-width: 390px) {
+
+  .training-project__wrapper {
+    padding-bottom: 17px;
+  }
+
+  .training-project {
+    margin: 15px 14px 71px;
+  }
+  .training-project__title {
+    padding-top: 219px;
+  }
+}
