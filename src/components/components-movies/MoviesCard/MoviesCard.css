@@ -27,7 +27,11 @@
   padding: 14px;
 }
 
-.movies-card-list__wrapper-icon {
+.movies-card-list__button-notes,
+.movies-card-list__button-delete 
+ {
+  padding: 0;
+  border: none;
   width: 30px;
   height: 30px;
   position: absolute;
@@ -40,12 +44,16 @@
   background: #313131;
 }
 
+.movies-card-list__button-notes_active {
+  background: #3DDC84;
+}
+
 .movies-card-list__item-image {
   width: 100%;
 }
 
 @media screen and (max-width: 768px){
-  .movies-card-list__wrapper-icon {
+  .movies-card-list____button-notes {
     top: 19px;
   }
 }

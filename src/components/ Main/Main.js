@@ -17,8 +17,6 @@ function Main() {
       <Techs />
       <AboutMe />
       <Footer />
-      {/* <Movies /> */}
-      {/* <SavedMovies /> */}
     </>
   );
 }
