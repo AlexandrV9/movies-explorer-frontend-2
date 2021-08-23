@@ -1,0 +1,137 @@
+.about-the-project {
+  padding-bottom: 96px;
+  padding: 0 4px 0;
+}
+
+.about-the-project__content-box {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: 1fr;
+  column-gap: 40px;
+  margin: 70px 0 110px;
+}
+
+.column-text__title {
+  font-style: normal;
+  font-weight: 400;
+  margin: 0 0 26px;
+  font-size: 20px;
+  line-height: 24px;
+  letter-spacing: -0.04em;
+  color: #fff;
+}
+
+.column-text__paragraph {
+  margin: 0;
+  font-style: normal;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 20px;
+  color: #fff;
+}
+
+.about-the-project__title {
+  margin: 0;
+}
+
+.about-the-project__table {
+  border: none;
+  border-spacing: 0px;
+  border-collapse: collapse;
+  width: 100%;
+}
+
+.about-the-project__table-first-column-title {
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 17px;
+  width: 228px;
+  padding: 9px 0;
+  background: #3DDC84;
+}
+
+.about-the-project__table-second-column-title {
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 17px;
+  padding: 9px 0;
+  background: #303030;
+  color: #fff;
+}
+
+.about-the-project__table-simple-text {
+  padding: 14px 0;
+  text-align: center;
+  font-size: 14px;
+  line-height: 17px;
+  color: #8B8B8B;
+}
+
+@media screen and (max-width: 768px) {
+  .column-text__paragraph {
+    font-size: 12px;
+    line-height: 18px;
+  }
+
+  .column-text__title {
+    margin-bottom: 22px;
+  }
+
+  .about-the-project {
+    padding-bottom: 76px;
+  }
+
+  .about-the-project__content-box {
+    margin-bottom: 94px;
+    column-gap: 30px;
+  }
+
+  .about-the-project__table-first-column-title {
+    width: 140px;
+  }
+}
+
+@media screen and (max-width: 620px) {
+  .about-the-project__content-box {
+    display: flex;
+    flex-direction: column;
+  }
+}
+
+@media screen and (max-width: 390px) {
+  .column-text__title {
+    font-size: 18px;
+    line-height: 22px;
+    margin-bottom: 15px;
+  }
+
+  .left-column-text__paragraph {
+    font-size: 11px;
+    line-height: 16px;
+  }
+
+  .about-the-project__content-box {
+    margin: 61px 0 60px;
+  }
+
+  .about-the-project__table-first-column-title {
+    font-size: 11px;
+    width: 100px;
+  }
+
+  .about-the-project__table-second-column-title {
+    font-size: 11px;
+  }
+
+  .about-the-project__table-simple-text{
+    padding: 10px 0;
+    font-size: 11px;
+    line-height: 11px;
+  }
+
+  .column-text__paragraph {
+    font-size: 11px;
+    line-height: 16px;
+  }
+
+}

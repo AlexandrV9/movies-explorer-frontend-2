@@ -1,0 +1,70 @@
+.log-or-creat-into-account__button {
+  margin: 0;
+  border: none;
+  padding: 8px 20px;
+  background: #3DDC84;
+  border-radius: 3px;
+  font-family: 'Inter', sans-serif;
+  font-style: normal;
+  font-weight: 500;
+  font-size: 12px;
+  line-height: 16px;
+  color: #000000
+}
+
+.log-or-creat-into-account__login-link {
+  text-decoration: none;
+  color: #000;
+}
+
+.log-or-creat-into-account__register-text {
+  text-decoration: none;
+  font-family: 'Inter', sans-serif;
+  font-style: normal;
+  font-weight: 500;
+  font-size: 12px;
+  line-height: 16px;
+  color: #FFFFFF;
+  margin-right: 30px;
+}
+
+.log-or-creat-into-account__navbar {
+  display: flex;
+  align-items: center;
+}
+
+@media screen and (max-width: 1240px) {
+  .log-or-creat-into-account {
+    margin: 0 50px;
+  }
+}
+
+@media screen and (max-width: 1024px) {
+  .log-or-creat-into-account {
+    margin: 0 30px;
+  }
+}
+
+@media screen and (max-width: 390px) {
+  .log-or-creat-into-account__register-text {
+    margin-right: 14px;
+  }
+
+  .log-or-creat-into-account {
+    margin: 0 14px;
+  }
+
+  .log-or-creat-into-account__button {
+    padding: 5px 12px;
+  }
+
+  .log-or-creat-into-account__button {
+    padding: 4px 9px;
+  }
+
+  .log-or-creat-into-account__register-text {
+    font-size: 10px;
+    line-height: 16px;
+  }
+
+}
