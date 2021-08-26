@@ -1,3 +1,4 @@
+import React from 'react';
 import './AboutMe.css';
 import studentPhotoPath from '../../../images/student-photo.jpg';
 import BlockName from '../../ReusedBlocks/BlockName/BlockName';

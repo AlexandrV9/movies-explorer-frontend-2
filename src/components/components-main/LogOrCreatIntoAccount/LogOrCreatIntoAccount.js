@@ -1,3 +1,4 @@
+import React from 'react';
 import './LogOrCreatIntoAccount.css';
 import { Link } from 'react-router-dom'
 

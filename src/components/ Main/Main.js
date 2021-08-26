@@ -1,6 +1,7 @@
 import Header from '../ReusedBlocks/Header/Header';
 import Promo from '../components-main/Promo/Promo';
 import AboutProject from '../components-main/AboutProject/AboutProject';
+import React from 'react';
 import Techs from '../components-main/Techs/Techs';
 import AboutMe from '../components-main/AboutMe/AboutMe';
 import Footer from '../ReusedBlocks/Footer/Footer';

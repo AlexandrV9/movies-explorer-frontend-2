@@ -28,6 +28,16 @@
   opacity: 0.8;
 }
 
+.button:disabled {
+  opacity: 0.3;
+  transition: none;
+}
+
+.button:disabled:hover {
+  opacity: 0.3;
+  cursor: not-allowed;
+}
+
 .content-wrapper {
   max-width: 1140px;
   margin: 0 auto;
