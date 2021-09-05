@@ -14,11 +14,12 @@
   text-rendering: optimizeLegibility;
 }
 
-@media screen and (max-width: 768px) {
+/* @media screen and (max-width: 768px) {
   .page_lock {
     overflow: hidden;
   }
-}
+} */
+
 
 .button {
   transition: all .3s linear;

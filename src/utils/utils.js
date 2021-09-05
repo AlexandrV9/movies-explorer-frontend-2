@@ -16,3 +16,13 @@ export const API_ADDITIONAL_CONFIG = {
     'Accept': 'application/json',
   }
 }
+
+export const handleCompareArraysMovies = (allMovies, allSaveMovies) => {
+  return allMovies.map((itemAllMovies) => {
+    return allSaveMovies.find((itemSaveMovies) => {
+      return itemSaveMovies.movieId === itemAllMovies.id;
+    }) 
+      ? {...itemAllMovies, isLike: true}
+      : {...itemAllMovies, isLike: false}
+  })
+} 

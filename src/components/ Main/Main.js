@@ -9,7 +9,7 @@ import LogOrCreatIntoAccount from '../components-main/LogOrCreatIntoAccount/LogO
 
 function Main() {
   return (
-    <>
+    <> 
       <Header>
         <LogOrCreatIntoAccount />
       </Header>
