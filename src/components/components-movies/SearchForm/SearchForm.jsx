@@ -6,11 +6,12 @@ function SearchForm ({
   movies,
   onSortMovies,
   onIsActivePreloader,
-  onIsClickButtonSearch
+  handleShowShortFilms,
+  checkedSort,
 }) {
-  
+
   const [nameMovie, setNameMovie] = React.useState('');
-  const [checked, setChecked] = React.useState(false);
+  const [checked, setChecked] = React.useState(checkedSort);
 
   const handleSubmit = event => {
     event.preventDefault();
@@ -19,11 +20,12 @@ function SearchForm ({
 
   const handleButtonSearchClik = () => {
     onIsActivePreloader();
-    onIsClickButtonSearch();
   }
     
   const handleChange = event => setNameMovie(event.target.value);
-  const handleChecked = () => setChecked(!checked);
+  const handleChecked = () => {
+    setChecked(!checked);
+  };
 
   return (
     <section className="search-form">
@@ -49,7 +51,7 @@ function SearchForm ({
       </div>
 
       <div className="search-form__content-wrapper">
-        <input type="checkbox" className="switch__input" checked={checked} onChange={handleChecked}/>
+        <input type="checkbox" className="switch__input" checked={checked} onChange={handleChecked} onClick={() => handleShowShortFilms(checked, nameMovie)}/>
         <p className="search-form__subtitle">Короткометражки</p>
       </div>
       

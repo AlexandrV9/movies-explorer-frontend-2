@@ -1,3 +1,5 @@
+import './InfoTooltip.css';
+
 const InfoTooltip = ({
   title,
   src,

@@ -6,12 +6,19 @@ import Techs from '../components-main/Techs/Techs';
 import AboutMe from '../components-main/AboutMe/AboutMe';
 import Footer from '../ReusedBlocks/Footer/Footer';
 import LogOrCreatIntoAccount from '../components-main/LogOrCreatIntoAccount/LogOrCreatIntoAccount';
+import Navigation from '../ReusedBlocks/Navigation/Navigation';
 
-function Main() {
+function Main({
+  loggedIn,
+}) {
   return (
     <> 
       <Header>
-        <LogOrCreatIntoAccount />
+        { loggedIn ?
+          <Navigation/> 
+          :
+          <LogOrCreatIntoAccount />
+        }
       </Header>
       <Promo />
       <AboutProject />

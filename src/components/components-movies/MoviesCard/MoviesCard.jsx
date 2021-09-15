@@ -1,6 +1,7 @@
 import React from 'react';
 import './MoviesCard.css';
 import { useLocation } from 'react-router-dom';
+import { handleСorrectTimeDisplay } from '../../../utils/utils';
 
 function MoviesCard ({
   movie,
@@ -10,13 +11,13 @@ function MoviesCard ({
 }) {
 
   const location = useLocation();
-  
+
   return (
     
     <li className="movies-card-list__item-list">
       <div className="movies-card-list__item-wrapper">
         <h3 className="movies-card-list__item-title">{movie.nameRU}</h3>
-        <p className="movies-card-list__item-subtitle">{movie.duration}</p>
+        <p className="movies-card-list__item-subtitle">{handleСorrectTimeDisplay(movie.duration)}</p>
           {location.pathname === '/saved-movies' ? 
 
             <button className='button movies-card-list__button-delete'onClick={() => onSaveMovie(movie)}>
@@ -32,7 +33,10 @@ function MoviesCard ({
           }
         
       </div>
-      <img src={movie.image} alt="Изображение" className="movies-card-list__item-image" />
+      <a href={movie.trailer} target="_blank" rel="noreferrer">
+        <img src={movie.image} alt="Изображение" className="movies-card-list__item-image" />
+      </a>
+      
     </li>
   );
 }

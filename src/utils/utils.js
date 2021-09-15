@@ -19,10 +19,31 @@ export const API_ADDITIONAL_CONFIG = {
 
 export const handleCompareArraysMovies = (allMovies, allSaveMovies) => {
   return allMovies.map((itemAllMovies) => {
+    let savedMovieId;
     return allSaveMovies.find((itemSaveMovies) => {
-      return itemSaveMovies.movieId === itemAllMovies.id;
+      if(itemSaveMovies.movieId === itemAllMovies.id) {
+        savedMovieId = itemSaveMovies._id;
+        return true;
+      } else {
+        return false;
+      }
+      // return itemSaveMovies.movieId === itemAllMovies.id;
     }) 
-      ? {...itemAllMovies, isLike: true}
-      : {...itemAllMovies, isLike: false}
+      ? {...itemAllMovies, isLike: true, _id: savedMovieId}
+      : {...itemAllMovies, isLike: false }
   })
-} 
+}
+
+export const handleСorrectTimeDisplay = (duration) => {
+  if(duration / 60 < 1) {
+    return duration + 'м';
+  } else {
+    const hours = Math.floor(duration / 60);
+    const minutes = duration - hours * 60;
+    if(minutes === 0){
+      return hours + 'ч ';
+    } else {
+      return  hours + 'ч ' + minutes + 'м';
+    }
+  }
+}

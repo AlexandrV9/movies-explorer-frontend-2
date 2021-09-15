@@ -37,9 +37,6 @@ function MoviesCardList ({
   const handleAddInstallInitiaLimitMovies = () => {
     if(window.innerWidth < 768){
       setMovieCount(prevCount => prevCount + 2);
-    }
-    else if(window.innerWidth < 480){
-      setMovieCount(prevCount => prevCount + 2);
     } else {
       setMovieCount(prevCount => prevCount + 3);
     }

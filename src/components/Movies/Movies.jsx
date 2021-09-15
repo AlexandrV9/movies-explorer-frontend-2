@@ -6,6 +6,7 @@ import MoviesCardList from '../components-movies/MoviesCardList/MoviesCardList';
 import Navigation from '../ReusedBlocks/Navigation/Navigation';
 import pathIconNotesInactive from '../../images/icon-notes.svg';
 import pathIconNotesActive from '../../images/icon-notes-active.svg';
+import Preloader from '../Preloader/Preloader';
 
 function Movies({
   movies,
@@ -13,11 +14,13 @@ function Movies({
   onSortMovies,
   isActivePreloader,
   isAnswerSearch,
-  onIsAnswerSearch,
   onIsActivePreloader,
   onIsClickButtonSearch,
   onAddSaveMovies,
   onSaveMovie,
+  handleShowShortFilms,
+  handleShowChecked,
+  checkedSort
 }) {
 
   return (
@@ -27,13 +30,17 @@ function Movies({
       </Header>
       <main className="main">
         <SearchForm 
+          checkedSort={checkedSort}
           movies={movies}
           onSortMovies={onSortMovies}
           onIsActivePreloader={onIsActivePreloader}
-          onIsAnswerSearch={onIsAnswerSearch}
           onIsClickButtonSearch={onIsClickButtonSearch}
+          handleShowShortFilms={handleShowShortFilms}
+          handleShowChecked={handleShowChecked}
         />
-        {isAnswerSearch ?
+        {isActivePreloader ? <Preloader /> :
+
+        isAnswerSearch ?
           <p className="search-form__text-result">Ничего не найдено</p>
           :
           <MoviesCardList 

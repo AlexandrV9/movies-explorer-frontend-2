@@ -5,9 +5,8 @@ import Navigation from '../ReusedBlocks/Navigation/Navigation';
 import { CurrentUser } from '../../contexts/CurrentUser';
 
 function Profile ({
-  userData,
-  setLoggedIn,
   onUpdateUser,
+  handleButtonLogOff,
 }) {
 
   const currentUser = React.useContext(CurrentUser);
@@ -22,11 +21,6 @@ function Profile ({
       setEmail(currentUser.email);
     }
   },[currentUser]);
-
-  const handleButtonLogOff = () => {
-    localStorage.removeItem('token');
-    setLoggedIn(false);
-  }
 
   const [emailDirty, setEmailDirty] = React.useState(false);
   const [nameDirty, setNameDirty] = React.useState(false);
@@ -79,7 +73,7 @@ function Profile ({
 
   const handleChangeName = event => {
     setName(event.target.value);
-    const re = /^[a-zа-я1-9\s]+$/;
+    const re = /^[a-zа-я\s]+$/;
     if(!re.test(String(event.target.value).toLowerCase())) {
       setNameError('Неккорректное имя');
     } else {
@@ -94,7 +88,6 @@ function Profile ({
       email
     })
   }
-
 
   return (
     <>

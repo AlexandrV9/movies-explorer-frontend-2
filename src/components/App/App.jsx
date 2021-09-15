@@ -31,33 +31,7 @@ function App() {
 
   const [isActivePreloader, setIsActivePreloader] = React.useState(false);
   const [isAnswerSearch, setIsAnswerSearch] = React.useState(false);
-  const [isClickButtonSearch, setIsClickButtonSearch] = React.useState(false);
-
-  const [infoTooltip, setInfoTooltip] = React.useState({
-    title: '',
-    src: '',
-    isOpen: false,
-  });
-
-
-  const closePopup = () => {
-    setInfoTooltip({
-      ...infoTooltip,
-      isOpen: false,
-    });
-  }
-
-  React.useEffect(() => {
-    handleGetSaveMovies();
-  },[]);
-
-  const handleGetSaveMovies = () => {
-    api_main
-    .getAllMovies()
-    .then((arraySaveMovies) => {
-      setSaveMovies(arraySaveMovies);
-    })
-  }
+  const [isAnswerSearchSaveMovies, setIsAnswerSearchSaveMovies] = React.useState(false);
 
   const [loggedIn, setLoggedIn] = React.useState(false);
   const [userData, setUserData] = React.useState({
@@ -66,47 +40,135 @@ function App() {
     email: ''
   })
 
+  const [popupUpdateProfile, setPopupUpdateProfile] = React.useState(false);
+  const [infoTooltip, setInfoTooltip] = React.useState({
+    title: '',
+    src: '',
+    isOpen: false,
+  });
+
+  const [name, setName] = React.useState('');
+  const [email, setEmail] = React.useState('');
+  
+  const closePopup = () => {
+    setPopupUpdateProfile(false);
+    setInfoTooltip({
+      ...infoTooltip,
+      isOpen: false,
+    });
+  }
+
+  const [checkedSort, setCheckedSort] = React.useState(false);
+  const [checkedSave, setCheckedSave] = React.useState(false);
+
+  const handlePopupUpdateProfile = (event) => {
+    event.preventDefault();
+    setPopupUpdateProfile(!popupUpdateProfile);
+  }
+
+  React.useEffect(() => {
+    if((JSON.parse(localStorage.getItem("foundSortFilms"))) !== null && (JSON.parse(localStorage.getItem("foundSortFilms"))).length !== 0){
+      let numberShortFilms = 0;
+      const currentLocalStprage = JSON.parse(localStorage.getItem("foundSortFilms"));
+      currentLocalStprage.forEach((item) => {
+        if(item.duration < 41){
+          numberShortFilms ++;
+        }
+      });  
+      if(currentLocalStprage.length === numberShortFilms ){
+        setCheckedSort(true);
+      }
+      setSortedMovies(currentLocalStprage);
+    }
+    localStorage.removeItem('foundSortFilms');
+    handleGetSaveMovies();
+    
+  },[loggedIn]);
+
+  const handleGetSaveMovies = () => {
+    api_main
+    .getAllMovies()
+    .then((arraySaveMovies) => {
+      setSaveMovies(arraySaveMovies);
+      setSortedArraySaveMovies(arraySaveMovies);
+    })
+  }
+
   const history = useHistory();
 
-  const handleIsClickButtonSearch =() => {
-    setIsClickButtonSearch(true);
+  const handleShowShortFilms = (checked, nameMovie) => {
+    if(!checked) {
+      setSortedMovies(sortedMovies.filter(itemMovie => itemMovie.duration < 41));
+      setCheckedSort(true);
+    } else {
+      setSortedMovies(movies.filter(itemMovie => itemMovie.nameRU.toString().toLowerCase().includes(nameMovie.toString().toLowerCase())));
+      setCheckedSort(false);
+    }
   }
 
-  const handleIsAnswerSearch = (sortMovies) => {
-    console.log(sortMovies);
-    if(sortMovies.length === 0){
-      setIsAnswerSearch(true);
-    }
-    else{
-      setIsAnswerSearch(false);
+  const handleShowShortSaveFilms = (checked, nameMovie) => {
+    if(!checked) {
+      setSortedArraySaveMovies(sortedSaveMovies.filter(itemMovie => itemMovie.duration < 41));
+    } else {
+      setSortedArraySaveMovies(saveMovies.filter(itemMovie => itemMovie.nameRU.toString().toLowerCase().includes(nameMovie.toString().toLowerCase())));
     }
   }
-  
 
   const handleSortMovies = (arrayMovie, nameMovie, checked) => {
+    localStorage.removeItem('foundSortFilms');
     setIsActivePreloader(true);
-    const sortedArrayMovies = arrayMovie.filter(itemMovie => itemMovie.nameRU.toString().toLowerCase().includes(nameMovie.toString().toLowerCase()));
+    setTimeout(() => {
+      setIsActivePreloader(false);
+      const sortedArrayMovies = arrayMovie.filter(itemMovie => itemMovie.nameRU.toString().toLowerCase().includes(nameMovie.toString().toLowerCase()));
     if(checked) {
       const shortFilms = sortedArrayMovies.filter(itemMovie => itemMovie.duration < 41);
+      if(shortFilms.length === 0) {
+        setIsAnswerSearch(true);
+      } else {
+        setIsAnswerSearch(false);
+      }
+      localStorage.setItem('foundSortFilms', JSON.stringify(shortFilms));
       setSortedMovies(shortFilms);
     } else {
+      if(sortedArrayMovies.length === 0) {
+        setIsAnswerSearch(true);
+      } else {
+        setIsAnswerSearch(false);
+      }
       setSortedMovies(sortedArrayMovies);
+      localStorage.setItem('foundSortFilms', JSON.stringify(sortedArrayMovies));
     }
-    setIsActivePreloader(false);
-    handleIsAnswerSearch(sortedArrayMovies);
+    }, 300);
+    
   };
 
   const handleSortSaveMovies = (arrayMovie, nameMovie, checked) => {
+    localStorage.removeItem('foundSortSaveFilms');
     setIsActivePreloader(true);
-    const sortedArraySaveMovies = arrayMovie.filter(itemMovie => itemMovie.nameRU.toString().toLowerCase().includes(nameMovie.toString().toLowerCase()));
+    setTimeout(() => {
+      const sortedArraySaveMovies = saveMovies.filter(itemMovie => itemMovie.nameRU.toString().toLowerCase().includes(nameMovie.toString().toLowerCase()));
     if(checked) {
       const shortFilms = sortedArraySaveMovies.filter(itemMovie => itemMovie.duration < 41);
+      if(shortFilms.length === 0) {
+        setIsAnswerSearchSaveMovies(true);
+      } else {
+        setIsAnswerSearchSaveMovies(false);
+      }
+      localStorage.setItem('foundSortSaveFilms', JSON.stringify(shortFilms));
       setSortedArraySaveMovies(shortFilms);
     } else {
+      if(sortedArraySaveMovies.length === 0) {
+        setIsAnswerSearchSaveMovies(true);
+      } else {
+        setIsAnswerSearchSaveMovies(false);
+      }
       setSortedArraySaveMovies(sortedArraySaveMovies);
+      localStorage.setItem('foundSortSaveFilms', JSON.stringify(sortedArraySaveMovies));
     } 
     setIsActivePreloader(false);
-    handleIsAnswerSearch(sortedArraySaveMovies);
+    },  300);
+    
+    
   };
 
   const handleIsActivePreloader = () => {
@@ -129,13 +191,13 @@ function App() {
             nameRU: item.nameRU,
             nameEN: item.nameEN,
             isLike: item.isLike,
+            _id: item._id,
             image: `https://api.nomoreparties.co${item.image.url}`,
             trailer: item.trailerLink,
             thumbnail: `https://api.nomoreparties.co${item.image.formats.thumbnail.url}`,
           });
         });
         setMovies(transformedArrayMovies);
-        setSortedArraySaveMovies(allSavedMovies);
       })
       .catch(err => console.log(err));
     }
@@ -152,7 +214,6 @@ function App() {
         console.log(`Ошибка ${err}`);
       })
     }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
   },[loggedIn]);
 
   const handleLogin = ({ password, email }) => {
@@ -160,10 +221,11 @@ function App() {
     .then((data) => {
       handleInfoTooltip("Вы успешно автризовались!", pathRegComp, true);
       localStorage.setItem('token', data.jwt);
-      setLoggedIn(true);
       setTimeout(() => {
+        setLoggedIn(true);
         history.push('/movies');
-      }, 3000);
+        closePopup();
+      }, 1000);
     })
     .catch(err => {
       console.log(err);
@@ -192,7 +254,7 @@ function App() {
       .then(({name, email}) => {
         setUserData({ name, email });
         setLoggedIn(true);
-        history.push('/movies'); 
+        // history.push('/movies'); 
       })
       .catch(err => console.log(err)); 
     } 
@@ -201,38 +263,80 @@ function App() {
   const handleUpdateUserProfile = ({email, name}) => {
     return api_main.updateUserProfile({email, name})
     .then((userData) => {
+      handleInfoTooltip("Данные пользователя успешно обновлены!", pathRegComp, true);
       setUserData(userData);
+      setPopupUpdateProfile(false);
     })
     .catch((err) => {
       console.log(`Ошибка ${err}`);
+      handleInfoTooltip("Что-то пошло не так! Попробуйте ещё раз.", pathRegFail, true);
     })
   }
 
   const handleAddSaveMovies = (movie) => {
+    const currentLocalStprage = JSON.parse(localStorage.getItem('foundSortFilms'));
     api_main
      .createMovies(movie)
      .then((newSaveMovie) => {
+       movie.isLike = true;
+       currentLocalStprage.push(newSaveMovie);
        setSaveMovies([...saveMovies, newSaveMovie]);
+       setSortedArraySaveMovies([...sortedSaveMovies, newSaveMovie]);
+       setSortedMovies((state) => {
+        return state.map((item) => {
+          if(item.movieId === newSaveMovie.movieId){
+            return {...item, _id: newSaveMovie._id}
+          } else {
+            return item;
+          }
+        })
+      });
+      localStorage.setItem('foundSortFilms', JSON.stringify(currentLocalStprage));
        console.log('Фильм добавлен');
       })
       .catch((err) => {
         console.log(`Ошибка ${err}`);
       })
   }
-  
+
+  React.useEffect(() => {
+    localStorage.setItem('foundSortFilms', JSON.stringify(sortedMovies));
+  },[handleAddSaveMovies]);
+
   const handleDeleteSaveMovies = (movie) => {
     api_main
-    .deleteMovieById(movie.movieId)
+    .deleteMovieById(movie._id)
     .then(() => {
+      movie.isLike = false;
       setSaveMovies((state) => {
         return state.filter((item) => {
-          return (item.movieId !== movie.movieId);
+          return (item._id !== movie._id);
         })
+      })
+      setSortedArraySaveMovies((state) => {
+        return state.filter((item) => 
+          item.movieId !== movie.movieId 
+          
+        )
       })
       setSortedMovies((state) => {
         return state.map((item) => 
           item.movieId === movie.movieId 
-          ? { ...item, isLike: false }
+          ? { 
+
+            country: item.country,
+            description: item.description,
+            director: item.director,
+            duration: item.duration,
+            image: item.image,
+            movieId: item.movieId,
+            nameEN: item.nameEN,
+            nameRU: item.nameRU,
+            thumbnail: item.thumbnail,
+            trailer: item.trailer,
+            year: item.year,
+            isLike: false 
+          }
           : item
         )
       })
@@ -251,15 +355,25 @@ function App() {
     });
     if(movie.isLike){
       handleDeleteSaveMovies(movie);
-      movie.isLike = false;
     } else {
       handleAddSaveMovies(movie);
-      movie.isLike = true;
     }
   }
 
   const handleInfoTooltip = (title, src, isOpen) => {
     setInfoTooltip({ title, src, isOpen });
+  }
+
+
+  const handleButtonLogOff = () => {
+    localStorage.removeItem('token');
+    localStorage.removeItem('foundSortFilms');
+    localStorage.removeItem('foundSortSaveFilms');
+    setLoggedIn(false);
+    setMovies([]);
+    setSaveMovies([]);
+    setSortedMovies([]); 
+    setSortedArraySaveMovies([]);
   }
 
   return (
@@ -275,11 +389,11 @@ function App() {
           saveMovies={saveMovies}
           isAnswerSearch={isAnswerSearch}
           isActivePreloader={isActivePreloader}
-          onIsClickButtonSearch={handleIsClickButtonSearch}
-          onIsAnswerSearch={handleIsAnswerSearch}
           onIsActivePreloader={handleIsActivePreloader}
           onSortMovies={handleSortMovies}
           onSaveMovie={handleSaveMovie}
+          handleShowShortFilms={handleShowShortFilms}
+          checkedSort={checkedSort}
         />
 
         <ProtectedRoute path="/saved-movies"
@@ -291,21 +405,31 @@ function App() {
           onSortMovies={handleSortSaveMovies}
           onSaveMovie={handleSaveMovie}
           onIsActivePreloader={handleIsActivePreloader}
-          onIsAnswerSearch={handleIsAnswerSearch}
-          onIsClickButtonSearch={handleIsClickButtonSearch}
+          isActivePreloader={isActivePreloader}
+          isAnswerSearchSaveMovies={isAnswerSearchSaveMovies}
+          handleShowShortSaveFilms={handleShowShortSaveFilms}
+          checkedSave={checkedSave}
         /> 
 
         <ProtectedRoute path="/profile"
+          setName={setName}
+          setEmail={setEmail}
+          name={name}
+          email={email}
           setUserData={setUserData}
           onUpdateUser = {handleUpdateUserProfile}
           setLoggedIn = {setLoggedIn}
           userData = {userData}
           loggedIn = {loggedIn}
           component={Profile}
+          handlePopupUpdateProfile={handlePopupUpdateProfile}
+          handleButtonLogOff={handleButtonLogOff}
         />
 
         <Route exact path="/">
-          <Main />
+          <Main 
+            loggedIn={loggedIn}
+          />
         </Route>
 
         <Route path="/signin">
@@ -329,6 +453,11 @@ function App() {
         </Route>
 
       </Switch>
+
+      <InfoTooltip 
+        { ...infoTooltip }
+        onClose={ closePopup }
+      />
 
     </CurrentUser.Provider>
   );
