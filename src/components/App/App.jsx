@@ -33,6 +33,11 @@ function App() {
   const [isAnswerSearch, setIsAnswerSearch] = React.useState(false);
   const [isAnswerSearchSaveMovies, setIsAnswerSearchSaveMovies] = React.useState(false);
 
+  const [name, setName] = React.useState('');
+  const [email, setEmail] = React.useState('');
+  const [checkedSort, setCheckedSort] = React.useState(false);
+  const [checkedSave, setCheckedSave] = React.useState(false);
+
   const [loggedIn, setLoggedIn] = React.useState(false);
   const [userData, setUserData] = React.useState({
     name: '',
@@ -47,8 +52,8 @@ function App() {
     isOpen: false,
   });
 
-  const [name, setName] = React.useState('');
-  const [email, setEmail] = React.useState('');
+  const token = localStorage.getItem('token');
+  const history = useHistory();
   
   const closePopup = () => {
     setPopupUpdateProfile(false);
@@ -58,8 +63,11 @@ function App() {
     });
   }
 
-  const [checkedSort, setCheckedSort] = React.useState(false);
-  const [checkedSave, setCheckedSave] = React.useState(false);
+  React.useEffect(() => {
+    if(token){
+      tokenCheck();
+    }
+  },[token]);
 
   const handlePopupUpdateProfile = (event) => {
     event.preventDefault();
@@ -74,33 +82,25 @@ function App() {
         if(item.duration < 41){
           numberShortFilms ++;
         }
-      });  
+      });
       if(currentLocalStprage.length === numberShortFilms ){
         setCheckedSort(true);
       }
       setSortedMovies(currentLocalStprage);
     }
     localStorage.removeItem('foundSortFilms');
-    handleGetSaveMovies();
     
   },[loggedIn]);
-
-  const handleGetSaveMovies = () => {
-    api_main
-    .getAllMovies()
-    .then((arraySaveMovies) => {
-      setSaveMovies(arraySaveMovies);
-      setSortedArraySaveMovies(arraySaveMovies);
-    })
-  }
-
-  const history = useHistory();
 
   const handleShowShortFilms = (checked, nameMovie) => {
     if(!checked) {
       setSortedMovies(sortedMovies.filter(itemMovie => itemMovie.duration < 41));
+      if(sortedMovies.filter(itemMovie => itemMovie.duration < 41).length === 0){
+        setIsAnswerSearch(true);
+      }
       setCheckedSort(true);
     } else {
+      setIsAnswerSearch(false);
       setSortedMovies(movies.filter(itemMovie => itemMovie.nameRU.toString().toLowerCase().includes(nameMovie.toString().toLowerCase())));
       setCheckedSort(false);
     }
@@ -109,8 +109,14 @@ function App() {
   const handleShowShortSaveFilms = (checked, nameMovie) => {
     if(!checked) {
       setSortedArraySaveMovies(sortedSaveMovies.filter(itemMovie => itemMovie.duration < 41));
+      if(sortedSaveMovies.filter(itemMovie => itemMovie.duration < 41).length === 0){
+        setIsAnswerSearchSaveMovies(true);
+      }
+      setCheckedSave(true);
     } else {
+      setIsAnswerSearchSaveMovies(false);
       setSortedArraySaveMovies(saveMovies.filter(itemMovie => itemMovie.nameRU.toString().toLowerCase().includes(nameMovie.toString().toLowerCase())));
+      setCheckedSave(false);
     }
   }
 
@@ -177,23 +183,23 @@ function App() {
 
   React.useEffect(() => {
     if(loggedIn){
-      Promise.all([ api_movies.getAllMovies(), api_main.getAllMovies()])
+      Promise.all([ api_movies.getAllMovies(), api_main.getAllMovies(token)])
       .then(([allMovies, allSavedMovies]) => {
         const arrayMovies = handleCompareArraysMovies(allMovies, allSavedMovies);
         const transformedArrayMovies = arrayMovies.map((item) => {
           return ({
-            country: item.country,
-            director: item.director,
+            country: item.country === null ? 'none' : item.country,
+            director: item.director === null ? 'none' : item.director,
             duration: item.duration,
             year: item.year,
             description: item.description,
             movieId: item.id,
             nameRU: item.nameRU,
-            nameEN: item.nameEN,
+            nameEN: item.nameEN === null ? 'none' : item.nameEN,
             isLike: item.isLike,
             _id: item._id,
             image: `https://api.nomoreparties.co${item.image.url}`,
-            trailer: item.trailerLink,
+            trailer: item.trailerLink === null ? '' : item.trailerLink,
             thumbnail: `https://api.nomoreparties.co${item.image.formats.thumbnail.url}`,
           });
         });
@@ -201,25 +207,12 @@ function App() {
       })
       .catch(err => console.log(err));
     }
-  },[loggedIn, saveMovies]);
-
-  React.useEffect(() => {
-    tokenCheck();
-    if(loggedIn){
-      api_main.getUserInfo()
-      .then(({name, email}) => {
-        setUserData({ name, email });
-      })
-      .catch((err) => {
-        console.log(`Ошибка ${err}`);
-      })
-    }
   },[loggedIn]);
 
   const handleLogin = ({ password, email }) => {
     return moviesAuth.authorization({ password, email })
     .then((data) => {
-      handleInfoTooltip("Вы успешно автризовались!", pathRegComp, true);
+      handleInfoTooltip("Вы успешно авторизовались!", pathRegComp, true);
       localStorage.setItem('token', data.jwt);
       setTimeout(() => {
         setLoggedIn(true);
@@ -237,29 +230,45 @@ function App() {
     return moviesAuth.register({ name, email, password })
     .then(() => {
       handleInfoTooltip("Вы успешно зарегестрировались!", pathRegComp, true);
+      return moviesAuth.authorization({ password, email })
+      
+    })
+    .then((data) => {
+      localStorage.setItem('token', data.jwt);
       setTimeout(() => {
-        history.push('/signin');
-      },3000)
+        setLoggedIn(true);
+        history.push('/movies');
+        closePopup();
+      }, 1000);
     })
     .catch(err => {
       console.log(err);
-      handleInfoTooltip("Что-то пошло не так! Попробуйте ещё раз.", pathRegFail, true);
+      if(err === 'Ошибка Conflict'){
+        handleInfoTooltip("Пользователь с такой почтой уже существует", pathRegFail, true);
+      } else {
+        handleInfoTooltip("Что-то пошло не так! Попробуйте ещё раз.", pathRegFail, true);
+      }
     })
   } 
 
-  function tokenCheck() { 
-    if(localStorage.getItem('token')) { 
+  const tokenCheck = () => {
+    
       api_main
-      .getUserInfo()
+      .getUserInfo(token)
       .then(({name, email}) => {
         setUserData({ name, email });
         setLoggedIn(true);
-        // history.push('/movies'); 
       })
       .catch(err => console.log(err)); 
-    } 
-  }
 
+      api_main
+      .getAllMovies(token)
+      .then((arraySaveMovies) => {
+        setSaveMovies(arraySaveMovies);
+        setSortedArraySaveMovies(arraySaveMovies);
+      })
+  }
+  
   const handleUpdateUserProfile = ({email, name}) => {
     return api_main.updateUserProfile({email, name})
     .then((userData) => {
@@ -364,7 +373,6 @@ function App() {
     setInfoTooltip({ title, src, isOpen });
   }
 
-
   const handleButtonLogOff = () => {
     localStorage.removeItem('token');
     localStorage.removeItem('foundSortFilms');
@@ -375,6 +383,15 @@ function App() {
     setSortedMovies([]); 
     setSortedArraySaveMovies([]);
   }
+
+  const handleCheckedSort = () => {
+    setCheckedSort(!checkedSort);
+  };
+
+  const handleCheckedSave = () => {
+    setCheckedSave(!checkedSave);
+  };
+  
 
   return (
     <CurrentUser.Provider value={userData}>
@@ -390,10 +407,11 @@ function App() {
           isAnswerSearch={isAnswerSearch}
           isActivePreloader={isActivePreloader}
           onIsActivePreloader={handleIsActivePreloader}
-          onSortMovies={handleSortMovies}
+          handleSortMovies={handleSortMovies}
           onSaveMovie={handleSaveMovie}
           handleShowShortFilms={handleShowShortFilms}
           checkedSort={checkedSort}
+          handleCheckedSort={handleCheckedSort}
         />
 
         <ProtectedRoute path="/saved-movies"
@@ -402,13 +420,14 @@ function App() {
           component={SavedMovies}
           loggedIn = {loggedIn}
           movies={movies}
-          onSortMovies={handleSortSaveMovies}
+          handleSortSaveMovies={handleSortSaveMovies}
           onSaveMovie={handleSaveMovie}
           onIsActivePreloader={handleIsActivePreloader}
           isActivePreloader={isActivePreloader}
           isAnswerSearchSaveMovies={isAnswerSearchSaveMovies}
           handleShowShortSaveFilms={handleShowShortSaveFilms}
           checkedSave={checkedSave}
+          handleCheckedSave={handleCheckedSave}
         /> 
 
         <ProtectedRoute path="/profile"

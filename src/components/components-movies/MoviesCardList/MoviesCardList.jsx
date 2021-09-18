@@ -2,6 +2,15 @@ import React from 'react';
 import './MoviesCardList.css';
 import MoviesCard from '../MoviesCard/MoviesCard';
 import Preloader from '../../Preloader/Preloader';
+import {
+  TABLET_SCREEN_WIDTH,
+  PHONE_SCREEN_WIDTH,
+  NUMBER_INITIALLY_MOVIES_TABLET,
+  NUMBER_INITIALLY_MOVIES_PHONE,
+  NUMBER_ADDED_MOVIES_TABLET,
+  NUMBER_ADDED_MOVIES_PHONE,
+  NUMBER_INITIALLY_MOVIES_LAPTOP,
+} from '../../../utils/constants'
 
 function MoviesCardList ({ 
   pathIconNotesInactive, 
@@ -12,7 +21,7 @@ function MoviesCardList ({
 }) {
 
   const [isActive, setIsActive] = React.useState(false);
-  const [movieCount, setMovieCount] = React.useState(12);
+  const [movieCount, setMovieCount] = React.useState(NUMBER_INITIALLY_MOVIES_LAPTOP);
 
   const limitSortedMovies = movies.slice(0, movieCount);
 
@@ -25,20 +34,19 @@ function MoviesCardList ({
   }
 
   const hadnleShowMovies = () => {
-    if(window.innerWidth < 768){
-      setMovieCount(8);
+    if(window.innerWidth < TABLET_SCREEN_WIDTH){
+      setMovieCount(NUMBER_INITIALLY_MOVIES_TABLET);
     }
-    if(window.innerWidth < 480) {
-      setMovieCount(5);
+    if(window.innerWidth < PHONE_SCREEN_WIDTH) {
+      setMovieCount(NUMBER_INITIALLY_MOVIES_PHONE);
     } 
   }
 
-
   const handleAddInstallInitiaLimitMovies = () => {
-    if(window.innerWidth < 768){
-      setMovieCount(prevCount => prevCount + 2);
+    if(window.innerWidth < TABLET_SCREEN_WIDTH){
+      setMovieCount(prevCount => prevCount + NUMBER_ADDED_MOVIES_TABLET);
     } else {
-      setMovieCount(prevCount => prevCount + 3);
+      setMovieCount(prevCount => prevCount + NUMBER_ADDED_MOVIES_PHONE);
     }
         
   }

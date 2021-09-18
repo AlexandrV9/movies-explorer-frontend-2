@@ -11,7 +11,7 @@ import Preloader from '../Preloader/Preloader';
 function Movies({
   movies,
   sortedMovies,
-  onSortMovies,
+  handleSortMovies,
   isActivePreloader,
   isAnswerSearch,
   onIsActivePreloader,
@@ -20,7 +20,8 @@ function Movies({
   onSaveMovie,
   handleShowShortFilms,
   handleShowChecked,
-  checkedSort
+  checkedSort,
+  handleCheckedSort
 }) {
 
   return (
@@ -32,11 +33,12 @@ function Movies({
         <SearchForm 
           checkedSort={checkedSort}
           movies={movies}
-          onSortMovies={onSortMovies}
+          handleSortMovies={handleSortMovies}
           onIsActivePreloader={onIsActivePreloader}
           onIsClickButtonSearch={onIsClickButtonSearch}
           handleShowShortFilms={handleShowShortFilms}
           handleShowChecked={handleShowChecked}
+          handleCheckedSort={handleCheckedSort}
         />
         {isActivePreloader ? <Preloader /> :
 

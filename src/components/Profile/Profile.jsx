@@ -19,6 +19,7 @@ function Profile ({
     if(currentUser.name){
       setName(currentUser.name);
       setEmail(currentUser.email);
+      setFormValid(false);
     }
   },[currentUser]);
 
@@ -60,6 +61,14 @@ function Profile ({
       setFormValid(true);
     }
   }, [emailError, nameError]);
+
+  React.useEffect(() => {
+    if(currentUser.name === name && currentUser.email === email){
+      setFormValid(false);
+    } else {
+      setFormValid(true);
+    }
+  },[name, email]);
 
   const handleChangeEmail = event => {
     setEmail(event.target.value);

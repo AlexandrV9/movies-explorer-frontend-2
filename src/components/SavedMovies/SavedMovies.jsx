@@ -11,16 +11,16 @@ function SavedMovies ({
   saveMovies,
   deleteButtonSaveMoviesClick,
   onDeleteSaveMovies,
-  onSortMovies,
+  handleSortSaveMovies,
   onSaveMovie,
   onIsActivePreloader,
   onIsClickButtonSearch,
   sortedSaveMovies,
   isAnswerSearchSaveMovies,
   handleShowShortSaveFilms,
-  checkedSort,
   checkedSave,
-  isActivePreloader
+  isActivePreloader,
+  handleCheckedSave,
 }) {
 
   return (
@@ -31,11 +31,12 @@ function SavedMovies ({
       <main className="main">
         <SearchForm 
           movies={saveMovies}
-          onSortMovies={onSortMovies}
+          handleSortSaveMovies={handleSortSaveMovies}
           onIsActivePreloader={onIsActivePreloader}
           onIsClickButtonSearch={onIsClickButtonSearch}
-          handleShowShortFilms={handleShowShortSaveFilms}
-          checkedSort={checkedSave}
+          handleShowShortSaveFilms={handleShowShortSaveFilms}
+          checkedSave={checkedSave}
+          handleCheckedSave={handleCheckedSave}
         />
         { isActivePreloader ? <Preloader /> :
          isAnswerSearchSaveMovies ? 

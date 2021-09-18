@@ -6,6 +6,7 @@ export const API_MAIN_CONFIG = {
   headers: {
     'Content-Type': 'application/json',
     'Accept': 'application/json',
+    'Authorization': `Bearer ${localStorage.getItem('token')}`
   }
 }
 
@@ -27,7 +28,6 @@ export const handleCompareArraysMovies = (allMovies, allSaveMovies) => {
       } else {
         return false;
       }
-      // return itemSaveMovies.movieId === itemAllMovies.id;
     }) 
       ? {...itemAllMovies, isLike: true, _id: savedMovieId}
       : {...itemAllMovies, isLike: false }

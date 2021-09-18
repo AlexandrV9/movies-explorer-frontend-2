@@ -8,11 +8,14 @@ class MainAPI {
 
   _serverResponse = res => res.ok ? res.json() : Promise.reject(`Error: ${res.status}`);
 
-  getAllMovies() {
+  getAllMovies(token) {
     return fetch(`${this._url}/movies`, {
       credentials: 'include',
       method: 'GET',
-      headers: this._headers,
+      headers: {
+        ...this._headers,
+        'Authorization': `Bearer ${token}`
+      },
     })
     .then(this._serverResponse);
   }
@@ -36,11 +39,14 @@ class MainAPI {
     .then(this._serverResponse);
   }
 
-  getUserInfo() {
+  getUserInfo(token) {
     return fetch(`${this._url}/users/me`, {
       credentials: 'include',
       method: 'GET',
-      headers: this._headers
+      headers: {
+        ...this._headers,
+        'Authorization': `Bearer ${token}`
+      },
     })
     .then(this._serverResponse);
   }
