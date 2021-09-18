@@ -1,0 +1,79 @@
+.popup {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 10000;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.7);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  visibility: hidden;
+  opacity: 0;
+}
+
+.popup_visible {
+  visibility: visible;
+  opacity: 1;
+}
+
+.popup__title {
+  font-weight: 900;
+  color:#fff
+}
+
+.popup_type_infoTooltip {
+  display: flex;
+  justify-content: center;
+  width: 100vw;
+  height: 100vh;
+  z-index: 1000;
+}
+
+.popup__content_type_infoTooltip {
+  position: relative;
+  max-width: 430px;
+  background-color: #fff;
+  border-radius: 10px;
+  box-sizing: border-box;
+
+}
+
+.popup__content_type_infoTooltip {
+  padding: 60px 30px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.popup__icon_type_infoTooltip {
+  width: 120px;
+  height: 120px;
+  margin-bottom: 32px;
+}
+
+.popup__close-button_type_infoTooltip {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  width: 25px;
+  height: 25px;
+  border: none;
+  background: none;
+  background-image: url('../../../images/icone-close.svg');
+  background-repeat: no-repeat;
+  background-size: 25px 25px;
+  background-position: center;
+}
+
+.popup__title_type_infoTooltip {
+  font-size: 20px;
+  font-weight: 500;
+  text-align: center;
+}
+
+.popup__title_type_infoTooltip {
+  color: black;
+}

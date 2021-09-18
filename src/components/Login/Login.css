@@ -118,6 +118,16 @@
   margin-bottom: 37px;
 }
 
+.login__input-error {
+  font-weight: 400;
+  font-size: 10px;
+  line-height: 12px;
+  bottom: -20px;
+  left: 15px;
+  position: absolute;
+  color: rgba(238, 52, 101, 1);
+}
+
 @media screen and (max-width: 768px) {
   .login__wrapper {
     margin-top: 232px;
